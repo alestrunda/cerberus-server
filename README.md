@@ -18,6 +18,6 @@ Starts the server in development mode, printing all traffic in console.
 
 Feeds database with sample data. Check variables in file ``sampleDataGenerator.js`` to set how much sample data are to be created.
 
-## `npm start`
+### `npm start`
 
 Starts the server.
