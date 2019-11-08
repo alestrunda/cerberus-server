@@ -10,11 +10,11 @@ You will need mongoDB database (I used mlab) and create .env file with correspon
 
 ## Scripts
 
-### `npm develop`
+### `npm run develop`
 
 Starts the server in development mode, printing all traffic in console.
 
-### `npm sample`
+### `npm run sample`
 
 Feeds database with sample data. Check variables in file ``sampleDataGenerator.js`` to set how much sample data are to be created.
 
