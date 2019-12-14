@@ -23,13 +23,17 @@ if (process.env.NODE_ENV === "development") {
 app.use(bodyParser.json());
 
 //serve static files
-app.use(express.static(process.env.BACKGROUNDS_FOLDER))
+app.use(express.static(process.env.BACKGROUNDS_FOLDER));
 
 //connect to db
 try {
-  mongoose.connect(process.env.DB_URL, { useNewUrlParser: true }, () => {
-    console.log("Connection to database successfull");
-  });
+  mongoose.connect(
+    process.env.DB_URL,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    () => {
+      console.log("Connection to database successfull");
+    }
+  );
 } catch (e) {
   console.log("Cannot connect to database");
   process.exit(1);
