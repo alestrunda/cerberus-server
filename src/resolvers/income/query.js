@@ -8,15 +8,18 @@ import {
   fillRecordTags,
   setUpRecordDate
 } from "../../misc";
+import { UserInputError } from "apollo-server-express";
 
 export default {
   income: async (root, { _id }, context, info) => {
     const selections = info.fieldNodes[0].selectionSet.selections;
     const record = await Income.findOne({ _id }).lean();
+    if (!record) throw new UserInputError(`No Income found with ID: ${_id}`);
     return await fillRecordTags(
       await fillRecordDebt(
         await fillRecordSubject(setUpRecordDate(record), Subject, selections),
         Debt,
+        Subject,
         selections
       ),
       Tag,
