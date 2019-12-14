@@ -38,7 +38,12 @@ export const fillRecordTags = (record, tagModel, querySelections) => {
   };
 };
 
-export const fillRecordDebt = async (record, debtModel, querySelections) => {
+export const fillRecordDebt = async (
+  record,
+  debtModel,
+  subjectModel,
+  querySelections
+) => {
   if (!record.debtID) {
     return record;
   }
@@ -47,9 +52,14 @@ export const fillRecordDebt = async (record, debtModel, querySelections) => {
     return record;
   }
   const debt = await debtModel.findOne({ _id: record.debtID });
+  const debtFilled = await fillRecordSubject(
+    debt.toObject(),
+    subjectModel,
+    querySelections
+  );
   return {
     ...record,
-    debt
+    debt: debtFilled
   };
 };
 
