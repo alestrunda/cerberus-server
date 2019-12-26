@@ -4,6 +4,10 @@
   "description": "Cerberus server",
   "author": "Aleš Trunda",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alestrunda/cerberus-server"
+  },
   "main": "src/index.js",
   "dependencies": {
     "apollo-server-express": "^2.9.7",
