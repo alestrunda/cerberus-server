@@ -1,15 +1,20 @@
 import Debt from "../../models/Debt";
 import Subject from "../../models/Subject";
 import Tag from "../../models/Tag";
-import { fillRecordSubject, fillRecordTags, setUpRecordDate } from "../../misc";
+import {
+  fillRecordSubject,
+  fillRecordTags,
+  setUpRecordDates
+} from "../../misc";
 
 export default {
   debt: async (root, { _id }, context, info) => {
     const selections = info.fieldNodes[0].selectionSet.selections;
     const record = await Debt.findOne({ _id }).lean();
     return await fillRecordTags(
-      await fillRecordSubject(setUpRecordDate(record), Subject, selections),
-      Tag, selections
+      await fillRecordSubject(setUpRecordDates(record), Subject, selections),
+      Tag,
+      selections
     );
   },
   debts: async (parent, args, context, info) => {
@@ -18,7 +23,11 @@ export default {
     const records = results.map(
       async record =>
         await fillRecordTags(
-          await fillRecordSubject(setUpRecordDate(record), Subject, selections),
+          await fillRecordSubject(
+            setUpRecordDates(record),
+            Subject,
+            selections
+          ),
           Tag,
           selections
         )

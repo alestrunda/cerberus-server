@@ -6,7 +6,7 @@ import {
   fillRecordDebt,
   fillRecordSubject,
   fillRecordTags,
-  setUpRecordDate
+  setUpRecordDates
 } from "../../misc";
 import { UserInputError } from "apollo-server-express";
 
@@ -17,7 +17,7 @@ export default {
     if (!record) throw new UserInputError(`No Income found with ID: ${_id}`);
     return await fillRecordTags(
       await fillRecordDebt(
-        await fillRecordSubject(setUpRecordDate(record), Subject, selections),
+        await fillRecordSubject(setUpRecordDates(record), Subject, selections),
         Debt,
         Subject,
         selections
@@ -32,7 +32,11 @@ export default {
     const records = results.map(
       async record =>
         await fillRecordTags(
-          await fillRecordSubject(setUpRecordDate(record), Subject, selections),
+          await fillRecordSubject(
+            setUpRecordDates(record),
+            Subject,
+            selections
+          ),
           Tag,
           selections
         )

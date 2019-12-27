@@ -7,6 +7,7 @@ const DebtSchema = new Schema({
   description: String,
   hours: { type: Number, default: 0 },
   isPaid: { type: Boolean, default: false },
+  lastUpdate: { type: Date, default: Date.now },
   partial: { type: Number, default: 0 },
   subjectID: { type: Schema.Types.ObjectId, required: true },
   tags: [{ type: Schema.Types.ObjectId, required: true }]

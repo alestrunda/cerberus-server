@@ -8,6 +8,7 @@ export default gql`
     debt: Debt
     debtID: ID
     description: String
+    lastUpdate: Float
     subject: Subject
     tags: [Tag]
   }

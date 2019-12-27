@@ -6,6 +6,7 @@ export default gql`
     amount: Float
     date: Float
     description: String
+    lastUpdate: Float
     subject: Subject
     tags: [Tag]
   }

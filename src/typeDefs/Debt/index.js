@@ -8,6 +8,7 @@ export default gql`
     description: String
     hours: Float
     isPaid: Boolean
+    lastUpdate: Float
     partial: Float
     subject: Subject
     tags: [Tag]

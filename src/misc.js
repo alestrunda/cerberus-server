@@ -63,10 +63,11 @@ export const fillRecordDebt = async (
   };
 };
 
-export const setUpRecordDate = record => {
+export const setUpRecordDates = record => {
   return {
     ...record,
-    date: new Date(record.date).getTime()
+    date: new Date(record.date).getTime(),
+    lastUpdate: record.lastUpdate ? new Date(record.lastUpdate).getTime() : null
   };
 };
 
@@ -96,7 +97,7 @@ export const createPaymentRecord = async (args, recordModel, subjectModel) => {
   });
   await newRecord.save();
   return await fillRecordSubject(
-    setUpRecordDate(newRecord.toObject()),
+    setUpRecordDates(newRecord.toObject()),
     subjectModel
   );
 };
@@ -118,9 +119,10 @@ export const editPaymentRecord = async (
     }
     record[field] = args[field];
   }
+  record.lastUpdate = new Date();
   await record.save();
   return await fillRecordSubject(
-    setUpRecordDate(record.toObject()),
+    setUpRecordDates(record.toObject()),
     subjectModel
   );
 };

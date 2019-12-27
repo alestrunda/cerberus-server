@@ -1,14 +1,18 @@
 import Outlay from "../../models/Outlay";
 import Subject from "../../models/Subject";
 import Tag from "../../models/Tag";
-import { fillRecordSubject, fillRecordTags, setUpRecordDate } from "../../misc";
+import {
+  fillRecordSubject,
+  fillRecordTags,
+  setUpRecordDates
+} from "../../misc";
 
 export default {
   outlay: async (root, { _id }, context, info) => {
     const selections = info.fieldNodes[0].selectionSet.selections;
     const record = await Outlay.findOne({ _id }).lean();
     return await await fillRecordTags(
-      await fillRecordSubject(setUpRecordDate(record), Subject, selections),
+      await fillRecordSubject(setUpRecordDates(record), Subject, selections),
       Tag,
       selections
     );
@@ -21,7 +25,7 @@ export default {
         async record =>
           await fillRecordTags(
             await fillRecordSubject(
-              setUpRecordDate(record),
+              setUpRecordDates(record),
               Subject,
               selections
             ),

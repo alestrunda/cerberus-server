@@ -6,6 +6,7 @@ const IncomeSchema = new Schema({
   date: { type: Date, default: Date.now },
   debtID: { type: Schema.Types.ObjectId },
   description: String,
+  lastUpdate: { type: Date, default: Date.now },
   subjectID: { type: Schema.Types.ObjectId, required: true },
   tags: [{ type: Schema.Types.ObjectId, required: true }]
 });
