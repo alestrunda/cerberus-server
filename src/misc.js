@@ -3,7 +3,7 @@ import { UserInputError } from "apollo-server-express";
 
 export const isSelectionInQuery = (selections, fieldName) => {
   if (!selections) return false;
-  return selections.findIndex(item => item.name.value === fieldName) !== -1;
+  return selections.findIndex((item) => item.name.value === fieldName) !== -1;
 };
 
 export const fillRecordSubject = async (
@@ -18,7 +18,7 @@ export const fillRecordSubject = async (
   const subject = await subjectModel.findOne({ _id: record.subjectID });
   const newRecord = {
     ...record,
-    subject
+    subject,
   };
   delete newRecord.subjectID;
   return newRecord;
@@ -34,7 +34,9 @@ export const fillRecordTags = (record, tagModel, querySelections) => {
   }
   return {
     ...record,
-    tags: record.tags.map(async tagID => await tagModel.findOne({ _id: tagID }))
+    tags: record.tags.map(
+      async (tagID) => await tagModel.findOne({ _id: tagID })
+    ),
   };
 };
 
@@ -59,16 +61,25 @@ export const fillRecordDebt = async (
   );
   return {
     ...record,
-    debt: debtFilled
+    debt: debtFilled,
   };
 };
 
-export const setUpRecordDates = record => {
+export const setUpRecordDates = (record) => {
   return {
     ...record,
     date: new Date(record.date).getTime(),
-    lastUpdate: record.lastUpdate ? new Date(record.lastUpdate).getTime() : null
+    lastUpdate: record.lastUpdate
+      ? new Date(record.lastUpdate).getTime()
+      : null,
   };
+};
+
+export const filterByYear = (records, year) => {
+  if (!year) return records;
+  return records.filter(
+    (record) => new Date(record.date).getFullYear() === year
+  );
 };
 
 export const getSubject = async (ID, model) => {
@@ -93,7 +104,7 @@ export const createPaymentRecord = async (args, recordModel, subjectModel) => {
   }
   const newRecord = new recordModel({
     ...args,
-    subjectID: subject._id
+    subjectID: subject._id,
   });
   await newRecord.save();
   return await fillRecordSubject(

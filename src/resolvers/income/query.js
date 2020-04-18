@@ -6,7 +6,8 @@ import {
   fillRecordDebt,
   fillRecordSubject,
   fillRecordTags,
-  setUpRecordDates
+  filterByYear,
+  setUpRecordDates,
 } from "../../misc";
 import { UserInputError } from "apollo-server-express";
 
@@ -26,11 +27,11 @@ export default {
       selections
     );
   },
-  incomes: async (parent, args, context, info) => {
+  incomes: async (parent, { year }, context, info) => {
     const selections = info.fieldNodes[0].selectionSet.selections;
-    const results = await Income.find({}).lean();
+    const results = filterByYear(await Income.find({}).lean(), year);
     const records = results.map(
-      async record =>
+      async (record) =>
         await fillRecordTags(
           await fillRecordSubject(
             setUpRecordDates(record),
@@ -41,8 +42,8 @@ export default {
           selections
         )
     );
-    return Promise.all(records).then(data => {
+    return Promise.all(records).then((data) => {
       return data.sort((a, b) => b.date - a.date);
     });
-  }
+  },
 };
