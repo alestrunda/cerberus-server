@@ -12,7 +12,7 @@ export const fillRecordSubject = async (
   querySelections
 ) => {
   if (querySelections && !isSelectionInQuery(querySelections, "subject")) {
-    //do not fill tags if that field is not in the query
+    //do not fill subject if that field is not in the query
     return record;
   }
   const subject = await subjectModel.findOne({ _id: record.subjectID });

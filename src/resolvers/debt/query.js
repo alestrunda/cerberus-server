@@ -4,7 +4,7 @@ import Tag from "../../models/Tag";
 import {
   fillRecordSubject,
   fillRecordTags,
-  setUpRecordDates
+  setUpRecordDates,
 } from "../../misc";
 
 export default {
@@ -21,7 +21,7 @@ export default {
     const selections = info.fieldNodes[0].selectionSet.selections;
     const results = await Debt.find({}).lean();
     const records = results.map(
-      async record =>
+      async (record) =>
         await fillRecordTags(
           await fillRecordSubject(
             setUpRecordDates(record),
@@ -32,8 +32,8 @@ export default {
           selections
         )
     );
-    return Promise.all(records).then(data => {
+    return Promise.all(records).then((data) => {
       return data.sort((a, b) => b.date - a.date);
     });
-  }
+  },
 };
