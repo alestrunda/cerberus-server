@@ -9,8 +9,9 @@ const readDirFilesPromise = () =>
         if (err) {
           reject(err);
         }
+        if (!files) return [];
         resolve(
-          files.filter(item => !item.isDirectory()).map(item => item.name)
+          files.filter((item) => !item.isDirectory()).map((item) => item.name)
         );
       }
     );
@@ -31,5 +32,5 @@ export default {
     } catch (e) {
       return e;
     }
-  }
+  },
 };
