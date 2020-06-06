@@ -1,0 +1,18 @@
+version: '2.0'
+services:
+  server:
+    container_name: server
+    build: .
+    volumes:
+      - ./src:/usr/app/src
+      - D:/Wallpapers/food:/usr/app/background
+    ports:
+      - "8626:8626"
+    env_file:
+      - .env
+    links:
+      - redis
+  redis:
+    container_name: redis
+    image: redis
+    command: redis-server

@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import morgan from "morgan";
 import { ApolloServer } from "apollo-server-express";
 
+import redis from "./redis";
 import typeDefs from "./typeDefs";
 import resolvers from "./resolvers";
 
@@ -25,6 +26,15 @@ app.use(bodyParser.json());
 //serve static files
 app.use(express.static(process.env.BACKGROUNDS_FOLDER));
 
+//init redis
+try {
+  redis.createClient({ host: "redis" });
+  //TODO: log when connection to redis successfull
+} catch (e) {
+  console.error("Cannot connect to redis", e);
+  process.exit(1);
+}
+
 //connect to db
 try {
   mongoose.connect(
@@ -35,7 +45,7 @@ try {
     }
   );
 } catch (e) {
-  console.log("Cannot connect to database");
+  console.error("Cannot connect to mongodb", e);
   process.exit(1);
 }
 
@@ -51,11 +61,13 @@ app.get("/", (req, res) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  debug: process.env.NODE_ENV === "development"
+  debug: process.env.NODE_ENV === "development",
 });
 server.applyMiddleware({ app });
 
 //start server
 const port = process.env.PORT;
 app.listen(port);
-console.log(`Server running on http://localhost:${port}`);
+console.log(
+  `Server running on http://localhost:${port} and graphQL http://localhost:${port}/graphql`
+);

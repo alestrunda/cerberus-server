@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { UserInputError } from "apollo-server-express";
+import redis from "./redis";
 
 export const isSelectionInQuery = (selections, fieldName) => {
   if (!selections) return false;
@@ -15,7 +16,13 @@ export const fillRecordSubject = async (
     //do not fill subject if that field is not in the query
     return record;
   }
-  const subject = await subjectModel.findOne({ _id: record.subjectID });
+  const { client: redisClient, getAsync: getRedisAsycn } = redis.getClient();
+  let subject = await getRedisAsycn(record.subjectID.toString());
+  if (subject) subject = JSON.parse(subject);
+  else {
+    subject = await subjectModel.findOne({ _id: record.subjectID });
+    redisClient.set(record.subjectID.toString(), JSON.stringify(subject));
+  }
   const newRecord = {
     ...record,
     subject,
@@ -32,11 +39,18 @@ export const fillRecordTags = (record, tagModel, querySelections) => {
     //do not fill tags if that field is not in the query
     return record;
   }
+  const { client: redisClient, getAsync: getRedisAsycn } = redis.getClient();
   return {
     ...record,
-    tags: record.tags.map(
-      async (tagID) => await tagModel.findOne({ _id: tagID })
-    ),
+    tags: record.tags.map(async (tagID) => {
+      let tag = await getRedisAsycn(tagID.toString());
+      if (tag) tag = JSON.parse(tag);
+      else {
+        tag = await tagModel.findOne({ _id: tagID });
+        redisClient.set(tagID.toString(), JSON.stringify(tag));
+      }
+      return tag;
+    }),
   };
 };
 

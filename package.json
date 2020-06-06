@@ -22,7 +22,8 @@
     "mongodb": "^3.5.6",
     "mongoose": "^5.9.9",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.3",
+    "redis": "^3.0.2"
   },
   "devDependencies": {
     "faker": "^4.1.0"
@@ -30,7 +31,7 @@
   "scripts": {
     "develop": "nodemon --exec babel-node src/index.js",
     "sample": "babel-node sampleDataGenerator.js",
-    "start": "babel-node src/index.js",
+    "start": "if test \"$NODE_ENV\" = \"development\" ; then npm run develop ; else babel-node src/index.js ; fi",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
