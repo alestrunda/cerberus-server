@@ -28,7 +28,10 @@ app.use(express.static(process.env.BACKGROUNDS_FOLDER));
 
 //init redis
 try {
-  redis.createClient({ host: "redis" });
+  redis.createClient({
+    host: "redis",
+    retry_strategy: () => {}, //disallows redis to try to reconnect when connection failed
+  });
   //TODO: log when connection to redis successfull
 } catch (e) {
   console.error("Cannot connect to redis", e);
