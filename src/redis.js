@@ -7,12 +7,13 @@ let client = {
 let getAsync = () => undefined;
 
 const createClient = (args) => {
-  client = redis.createClient(args);
-  client.on("error", (error) => {
+  const redisClient = redis.createClient(args);
+  redisClient.on("error", (error) => {
     console.error(error);
   });
-  client.on("ready", () => {
+  redisClient.on("ready", () => {
     getAsync = promisify(client.get).bind(client);
+    client = redisClient;
   });
 };
 
