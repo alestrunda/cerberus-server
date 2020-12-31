@@ -43,7 +43,8 @@ try {
   mongoose.connect(
     process.env.DB_URL,
     { useNewUrlParser: true, useUnifiedTopology: true },
-    () => {
+    (error) => {
+      if (error) throw error;
       console.log("Connection to database successfull");
     }
   );
