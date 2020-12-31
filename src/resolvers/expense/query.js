@@ -1,4 +1,4 @@
-import Outlay from "../../models/Outlay";
+import Expense from "../../models/Expense";
 import Subject from "../../models/Subject";
 import Tag from "../../models/Tag";
 import {
@@ -9,18 +9,18 @@ import {
 } from "../../misc";
 
 export default {
-  outlay: async (root, { _id }, context, info) => {
+  expense: async (root, { _id }, context, info) => {
     const selections = info.fieldNodes[0].selectionSet.selections;
-    const record = await Outlay.findOne({ _id }).lean();
+    const record = await Expense.findOne({ _id }).lean();
     return await await fillRecordTags(
       await fillRecordSubject(setUpRecordDates(record), Subject, selections),
       Tag,
       selections
     );
   },
-  outlays: async (parent, { year }, context, info) => {
+  expenses: async (parent, { year }, context, info) => {
     const selections = info.fieldNodes[0].selectionSet.selections;
-    const results = filterByYear(await Outlay.find({}).lean(), year);
+    const results = filterByYear(await Expense.find({}).lean(), year);
     const records = results
       .map(
         async (record) =>

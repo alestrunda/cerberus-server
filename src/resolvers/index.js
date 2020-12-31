@@ -3,8 +3,8 @@ import debtMutations from "./debt/mutation";
 import debtQueries from "./debt/query";
 import incomeMutations from "./income/mutation";
 import incomeQueries from "./income/query";
-import outlayMutations from "./outlay/mutation";
-import outlayQueries from "./outlay/query";
+import expenseMutations from "./expense/mutation";
+import expenseQueries from "./expense/query";
 import subjectQueries from "./subject/query";
 import subjectMutations from "./subject/mutation";
 import tagQueries from "./tag/query";
@@ -15,15 +15,15 @@ export default {
     ...backgroundQueries,
     ...debtQueries,
     ...incomeQueries,
-    ...outlayQueries,
+    ...expenseQueries,
     ...subjectQueries,
-    ...tagQueries
+    ...tagQueries,
   },
   Mutation: {
     ...debtMutations,
     ...incomeMutations,
-    ...outlayMutations,
+    ...expenseMutations,
     ...subjectMutations,
-    ...tagMutations
-  }
+    ...tagMutations,
+  },
 };

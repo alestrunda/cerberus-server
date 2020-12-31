@@ -2,18 +2,18 @@ import { gql } from "apollo-server-express";
 import {
   create as debtCreate,
   edit as debtEdit,
-  remove as debtRemove
+  remove as debtRemove,
 } from "./Debt/mutations";
 import {
   create as incomeCreate,
   edit as incomeEdit,
-  remove as incomeRemove
+  remove as incomeRemove,
 } from "./Income/mutations";
 import {
-  create as outlayCreate,
-  edit as outlayEdit,
-  remove as outlayRemove
-} from "./Outlay/mutations";
+  create as expenseCreate,
+  edit as expenseEdit,
+  remove as expenseRemove,
+} from "./Expense/mutations";
 import { create as subjectCreate } from "./Subject/mutations";
 import { create as tagCreate } from "./Tag/mutations";
 
@@ -27,9 +27,9 @@ export default gql`
     ${incomeEdit}
     ${incomeRemove}
 
-    ${outlayCreate}
-    ${outlayEdit}
-    ${outlayRemove}
+    ${expenseCreate}
+    ${expenseEdit}
+    ${expenseRemove}
 
     ${subjectCreate}
 

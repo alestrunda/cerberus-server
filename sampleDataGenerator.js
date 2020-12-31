@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import faker from "faker";
 import DebtModel from "./src/models/Debt";
 import IncomeModel from "./src/models/Income";
-import OutlayModel from "./src/models/Outlay";
+import ExpenseModel from "./src/models/Expense";
 import SubjectModel from "./src/models/Subject";
 import TagModel from "./src/models/Tag";
 
@@ -11,13 +11,13 @@ dotenv.config();
 
 const DEBTS_CNT = 25;
 const INCOMES_CNT = 65;
-const OUTLAYS_CNT = 100;
+const EXPENSES_CNT = 100;
 const TAGS_CNT = 10;
 const SUBJECTS_CNT = 30;
 const MAX_YEARS_DIFFERENCE = 5;
 const dateRange = [
   new Date(),
-  new Date((new Date().getFullYear() - MAX_YEARS_DIFFERENCE).toString())
+  new Date((new Date().getFullYear() - MAX_YEARS_DIFFERENCE).toString()),
 ];
 
 //connect to db
@@ -47,7 +47,7 @@ function shuffle(a) {
 
 function saveRecords(records, RecordModel) {
   const promises = [];
-  records.forEach(subject => {
+  records.forEach((subject) => {
     promises.push(RecordModel.create(subject));
   });
   return promises;
@@ -59,14 +59,14 @@ function getRandomInt(max) {
 
 function generateSubject() {
   return {
-    name: faker.name.findName()
+    name: faker.name.findName(),
   };
 }
 
 function generateTag() {
   //tags could be one or more word, likely just one word
   return {
-    name: getRandomInt(3) < 2 ? faker.lorem.word() : faker.lorem.words()
+    name: getRandomInt(3) < 2 ? faker.lorem.word() : faker.lorem.words(),
   };
 }
 
@@ -84,7 +84,7 @@ function generatePayment(subjects, tags) {
     date: faker.date.between(...dateRange),
     description: getDescription(),
     subjectID: subjects[getRandomInt(subjects.length)],
-    tags: pickRandomItems(tags, 3)
+    tags: pickRandomItems(tags, 3),
   };
 }
 
@@ -110,7 +110,7 @@ function generateDebt(subjects, tags) {
     ...generatePayment(subjects, tags),
     hours: faker.random.number(),
     isPaid: faker.random.boolean(),
-    partial: faker.random.number()
+    partial: faker.random.number(),
   };
 }
 
@@ -118,11 +118,11 @@ function generateIncome(subjects, tags, debtsID) {
   return {
     ...generatePayment(subjects, tags),
     debtID:
-      getRandomInt(2) === 0 ? undefined : debtsID[getRandomInt(debtsID.length)] //50% chance for debtID do be set
+      getRandomInt(2) === 0 ? undefined : debtsID[getRandomInt(debtsID.length)], //50% chance for debtID do be set
   };
 }
 
-function generateOutlay(subjects, tags) {
+function generateExpense(subjects, tags) {
   return generatePayment(subjects, tags);
 }
 
@@ -159,14 +159,14 @@ async function main() {
   await Promise.all(saveRecords(incomes, IncomeModel));
   console.log(`Created ${INCOMES_CNT} incomes.`);
 
-  const outlays = generateRecords(
-    OUTLAYS_CNT,
-    generateOutlay,
+  const expenses = generateRecords(
+    EXPENSES_CNT,
+    generateExpense,
     subjectsID,
     tagsID
   );
-  await Promise.all(saveRecords(outlays, OutlayModel));
-  console.log(`Created ${OUTLAYS_CNT} outlays.`);
+  await Promise.all(saveRecords(expenses, ExpenseModel));
+  console.log(`Created ${EXPENSES_CNT} expenses.`);
 
   console.log("done");
 }

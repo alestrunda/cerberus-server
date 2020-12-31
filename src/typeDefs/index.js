@@ -1,7 +1,7 @@
 import DebtType from "./Debt";
 import IncomeType from "./Income";
 import MutationType from "./Mutation";
-import OutlayType from "./Outlay";
+import ExpenseType from "./Expense";
 import QueryType from "./Query";
 import SubjectType from "./Subject";
 import TagType from "./Tag";
@@ -11,9 +11,9 @@ export default [
   DebtType,
   IncomeType,
   MutationType,
-  OutlayType,
+  ExpenseType,
   QueryType,
   SubjectType,
   TagInput,
-  TagType
+  TagType,
 ];

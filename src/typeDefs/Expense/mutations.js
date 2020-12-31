@@ -1,20 +1,20 @@
-export const create = `createOutlay(
+export const create = `createExpense(
   amount: Float
   date: Float
   description: String
   subjectID: String!
   tags: [String]
-): Outlay`;
+): Expense`;
 
-export const edit = `editOutlay(
+export const edit = `editExpense(
   _id: String!
   amount: Float
   date: Float
   description: String
   subjectID: String!
   tags: [String]
-): Outlay`;
+): Expense`;
 
-export const remove = `removeOutlay(
+export const remove = `removeExpense(
   _id: String!
-): Outlay`;
+): Expense`;

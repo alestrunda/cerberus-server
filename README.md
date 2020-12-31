@@ -1,6 +1,6 @@
 # Cerberus Server
 
-Web app to track my financial operations. Everyone should track incomes and outlays. The app tracks also debts and that's vital for freelancing.
+Web app to track my financial operations. Everyone should track incomes and expenses. The app tracks also debts and that's vital for freelancing.
 
 This is the back-end part, there is also front-end "cerberus-client" using react. Backend is build on node.js - express and apollo - graphql. Data are stored in mongodb.
 

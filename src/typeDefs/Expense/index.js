@@ -1,7 +1,7 @@
 import { gql } from "apollo-server-express";
 
 export default gql`
-  type Outlay {
+  type Expense {
     _id: ID
     amount: Float
     date: Float

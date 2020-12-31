@@ -8,8 +8,8 @@ export default gql`
     debts: [Debt]
     income(_id: String): Income
     incomes(year: Int): [Income]
-    outlay(_id: String): Outlay
-    outlays(year: Int): [Outlay]
+    expense(_id: String): Expense
+    expenses(year: Int): [Expense]
     subjects: [Subject]
     tags: [Tag]
   }
