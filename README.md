@@ -2,7 +2,7 @@
 
 Web app to track my financial operations. Everyone should track incomes and expenses. The app tracks also debts and that's vital for freelancing.
 
-This is the back-end part, there is also front-end "cerberus-client" using react. Backend is build on node.js - express and apollo - graphql. Data are stored in mongodb.
+This is the back-end part, there is also front-end [cerberus-client](https://github.com/alestrunda/cerberus-client) using react. Backend is build on node.js - express and apollo - graphql. Data are stored in mongodb.
 
 ## How to set up the enviroment
 
