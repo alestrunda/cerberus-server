@@ -3,7 +3,7 @@
 1. spin up docker container with mongo image
    `docker run mongo`
 
-2. connect into the dontainer using bash
+2. connect into that container using bash
    `docker exec -it <container_id> /bin/bash`
 
 3. run the export/import\
