@@ -32,7 +32,7 @@ export const fillRecordSubject = async (
 };
 
 export const fillRecordTags = (record, tagModel, querySelections) => {
-  if (!record.tags) {
+  if (!record || !record.tags) {
     return record;
   }
   if (querySelections && !isSelectionInQuery(querySelections, "tags")) {
@@ -80,6 +80,7 @@ export const fillRecordDebt = async (
 };
 
 export const setUpRecordDates = (record) => {
+  if (!record) return record;
   return {
     ...record,
     date: new Date(record.date).getTime(),

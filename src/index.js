@@ -12,66 +12,68 @@ import resolvers from "./resolvers";
 //load environment variables
 dotenv.config();
 
-//use express framework
-const app = express();
+(async function () {
+  //use express framework
+  const app = express();
 
-if (process.env.NODE_ENV === "development") {
-  //automatically log all requests
-  app.use(morgan("combined"));
-}
+  if (process.env.NODE_ENV === "development") {
+    //automatically log all requests
+    app.use(morgan("combined"));
+  }
 
-//use body parser to get parameters from requests
-app.use(bodyParser.json());
+  //use body parser to get parameters from requests
+  app.use(bodyParser.json());
 
-//serve static files
-app.use(express.static(process.env.BACKGROUNDS_FOLDER));
+  //serve static background images
+  app.use(express.static(process.env.BACKGROUNDS_FOLDER));
 
-//init redis
-try {
-  redis.createClient({
-    host: "redis",
-    retry_strategy: () => {}, //disallows redis to try to reconnect when connection failed
+  //init redis
+  try {
+    redis.createClient({
+      host: "redis",
+      retry_strategy: () => {}, //disallows redis to try to reconnect when connection failed
+    });
+  } catch (e) {
+    console.error("Cannot connect to redis", e);
+    process.exit(1);
+  }
+
+  //connect to db
+  try {
+    mongoose.connect(
+      process.env.DB_URL,
+      { useNewUrlParser: true, useUnifiedTopology: true },
+      (error) => {
+        if (error) throw error;
+        console.log("Connection to database successfull");
+      }
+    );
+  } catch (e) {
+    console.error("Cannot connect to mongodb", e);
+    process.exit(1);
+  }
+
+  //set Mongoose to use the global promise library
+  mongoose.Promise = global.Promise;
+
+  //base route
+  app.get("/", (req, res) => {
+    res.send("Running!");
   });
-  //TODO: log when connection to redis successfull
-} catch (e) {
-  console.error("Cannot connect to redis", e);
-  process.exit(1);
-}
 
-//connect to db
-try {
-  mongoose.connect(
-    process.env.DB_URL,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    (error) => {
-      if (error) throw error;
-      console.log("Connection to database successfull");
-    }
+  //create apollo server
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    debug: process.env.NODE_ENV === "development",
+  });
+  await server.start();
+  server.applyMiddleware({ app });
+
+  //start server
+  const port = process.env.PORT;
+  app.listen(port);
+  console.log(
+    `Server running on http://localhost:${port} and graphQL http://localhost:${port}/graphql`
   );
-} catch (e) {
-  console.error("Cannot connect to mongodb", e);
-  process.exit(1);
-}
-
-//set Mongoose to use the global promise library
-mongoose.Promise = global.Promise;
-
-//base route
-app.get("/", (req, res) => {
-  res.send("Running!");
-});
-
-//create apollo server
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  debug: process.env.NODE_ENV === "development",
-});
-server.applyMiddleware({ app });
-
-//start server
-const port = process.env.PORT;
-app.listen(port);
-console.log(
-  `Server running on http://localhost:${port} and graphQL http://localhost:${port}/graphql`
-);
+})();

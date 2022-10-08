@@ -1,11 +1,11 @@
-import redis from "redis";
+import { createClient } from "redis";
 import { promisify } from "util";
 
 let client;
 let getAsync = () => undefined;
 
-const createClient = (args) => {
-  const redisClient = redis.createClient(args);
+const createRedisClient = (args) => {
+  const redisClient = createClient(args);
   redisClient.on("error", (error) => {
     client = createDummyClient();
     console.error(error);
@@ -26,6 +26,6 @@ const getClient = () => ({
 });
 
 export default {
-  createClient,
+  createClient: createRedisClient,
   getClient,
 };
