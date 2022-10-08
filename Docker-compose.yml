@@ -5,7 +5,6 @@ services:
     build: .
     volumes:
       - ./src:/usr/app/src
-      - D:/Wallpapers/food:/usr/app/background
     ports:
       - "8626:8626"
     env_file:
