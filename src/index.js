@@ -30,7 +30,7 @@ dotenv.config();
   //init redis
   try {
     redis.createClient({
-      host: "redis",
+      url: "redis://redis:6379",
       retry_strategy: () => {}, //disallows redis to try to reconnect when connection failed
     });
   } catch (e) {

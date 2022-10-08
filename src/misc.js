@@ -16,8 +16,8 @@ export const fillRecordSubject = async (
     //do not fill subject if that field is not in the query
     return record;
   }
-  const { client: redisClient, getAsync: getRedisAsycn } = redis.getClient();
-  let subject = await getRedisAsycn(record.subjectID.toString());
+  const redisClient = redis.getClient();
+  let subject = await redisClient.get(record.subjectID.toString());
   if (subject) subject = JSON.parse(subject);
   else {
     subject = await subjectModel.findOne({ _id: record.subjectID });
@@ -39,11 +39,11 @@ export const fillRecordTags = (record, tagModel, querySelections) => {
     //do not fill tags if that field is not in the query
     return record;
   }
-  const { client: redisClient, getAsync: getRedisAsycn } = redis.getClient();
+  const redisClient = redis.getClient();
   return {
     ...record,
     tags: record.tags.map(async (tagID) => {
-      let tag = await getRedisAsycn(tagID.toString());
+      let tag = await redisClient.get(tagID.toString());
       if (tag) tag = JSON.parse(tag);
       else {
         tag = await tagModel.findOne({ _id: tagID });
